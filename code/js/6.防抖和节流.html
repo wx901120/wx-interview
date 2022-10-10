@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <button id="btn">按钮</button>
+    </div>
+    <!-- 箭头函数实现 -->
+    <script>
+        const fn1 = () => {
+            console.log('执行了');
+            let r = Math.floor(Math.random() * 255)
+            let g = Math.floor(Math.random() * 255)
+            let b = Math.floor(Math.random() * 255)
+            document.body.style.background = `rgb(${r},${g},${b})`
+        }
+        // 节流（简单的节流）：每次触发的都是第一次那个
+        function throttle(cb, delay) {
+            let last = 0
+            return (params) => {
+                let now = new Date()
+                // 超出节流时间就需要触发
+                if (now - last >= delay) {
+                    cb(params)
+                }
+            }
+        }
+        // 防抖: 这个只会触发最后一次事件
+        function debounce(cb, delay) {
+            let timer = null
+            return (params) => {
+                // 清除旧的
+                if (timer) clearTimeout(timer)
+                // 设置新的
+                timer = setTimeout(() => {
+                    cb(params)
+                }, delay);
+            }
+        }
+        // 最终版
+        // function 
+        document.addEventListener('resize', throttle(fn1, 200))
+    </script>
+    <!-- 下面是普通函数实现 -->
+    <script>
+        const fn = () => {
+            console.log('执行了');
+            let r = Math.floor(Math.random() * 255)
+            let g = Math.floor(Math.random() * 255)
+            let b = Math.floor(Math.random() * 255)
+            document.body.style.background = `rgb(${r},${g},${b})`
+        }
+        // 节流
+        // 1. 最基本实现
+        // 特点：这种方式第一次执行需要等待2s,而不是立马执行，不过它在停止改变窗口之后，还是会执行一次
+        // function throttle(fn, delay) {
+        //     let timer = null
+        //     return function () {
+        //         //解决this问题和arguments的问题
+        //         let _self = this
+        //         if(!timer) {
+        //             timer = setTimeout(() => {
+        //                 fn.apply(_self, arguments)
+        //                 timer = null
+        //             }, delay);
+        //         }else {
+        //             return;
+        //         }
+        //     }
+        // }
+        // window.addEventListener('resize', throttle(fn, 2000))
+
+        // 2. 通过date来计算时间
+        // 特点：这种方式一改变就会执行，一停止也就会停止
+        // function throttle(fn, delay) {
+        //     let pre = 0
+        //     return function () {
+        //         let now = new Date()
+        //         //解决this问题和arguments的问题
+        //         let _self = this
+        //         if (now - pre > delay) {// 如果当前的间隔大于delay了
+        //             fn.apply(_self, arguments)
+        //             pre = now
+        //         }
+        //     }
+        // }
+        // window.addEventListener('resize', throttle(fn, 2000))
+        // 2. 面试官想让你写的节流   这种方式是一开始就会执行，并且结束时，也会执行一次
+        // function throttle(fn, delay) {
+        //     let pre = 0
+        //     let timer = null
+        //     return function () {
+        //         let now = new Date()
+        //         // 剩余时间
+        //         let remain = delay - (now - pre)
+
+        //         let _self = this
+        // let args = arguments
+        //         if (remain <= 0) {
+        //             fn.apply(_self, args)
+        //             clearTimeout(timer)
+        //             pre = now
+        //         } else if (!timer) {// 有剩余时间并且有timer，那么就要在剩余时间到了后再执行一次
+        //                 clearTimeout(timer)
+        //             timer = setTimeout(() => {
+        //                 fn.apply(_self, args)
+        //                 pre = now
+        //             }, remain);
+
+        //         }
+        //     }
+        // }
+        // window.addEventListener('resize', throttle(fn, 2000))
+
+
+        /*
+        防抖: 在delay区间如果再次触发，那就重新计时
+        对于this问题，建议统一都用箭头函数，用了普通函数，就要考虑this问题
+        */
+        // 这样写一上来就会执行，不合适
+        // function debounce(fn, delay) {
+        //     fn()
+        // }
+        // function debounce(fn, delay) {
+        //     let timer = null // timer要放外面这里，
+        //     return function () {
+        //         let _this = this
+        //         let args = arguments
+        //         clearTimeout(timer)
+        //         timer = setTimeout(function () {
+        //             fn.apply(_this, args)
+        //         }, delay);// 设置了延时就要有清除的操作
+        //     }
+        // }
+        // const btn = document.getElementById('btn')
+
+        // function click() {
+        //     console.log('点击了～');
+        // }
+
+        // btn.addEventListener('click', debounce(click, 1000))
+
+    </script>
+</body>
+
+</html>

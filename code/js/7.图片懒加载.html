@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片懒加载</title>
+</head>
+
+<body>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+    <p>fdsjaklfdjlasjfdlsajfldjfsldkfjlsajdflasjfdlk杜拉斯封疆大吏开飞机撒了点饭睡觉啊的弗兰克撒娇法律的萨里发的风刀霜剑阿里封疆大吏</p>
+
+
+    <img data-src="./media/1.gif" />
+
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <img data-src="./media/2.gif" />
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <p>asdfslafjdlksajfdlsjaflkdjflasjfdlkjfls</p>
+    <img data-src="./media/3.gif" />
+    <script>
+        const images = document.querySelectorAll('img')
+        const cb = (entries) =>{
+            entries.forEach(entry=>{
+                if(entry.isIntersecting) {// 说明到了可视区域了
+                    const image = entry.target
+                    const data_src = image.getAttribute('data-src')
+                    image.setAttribute('src',data_src)
+                    // 加载之后就需要关掉监听
+                    observer.unobserve(image)
+                }
+            })
+        }
+
+        const observer = new IntersectionObserver(cb)
+        images.forEach(v=>{
+            observer.observe(v)
+        })
+
+        console.log(images);
+    </script>
+</body>
+
+</html>

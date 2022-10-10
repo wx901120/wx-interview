@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 1. 这是使用箭头函数实现的
+        const curring = (...args) => {
+            // 第一次进来的参数需要保存，形成闭包，存在内存里面
+            let params = args
+
+            // 这里定义一个返回的函数
+            const add = (...args) => {
+                params = [...params, ...args]// 把参数合并
+                return add
+            }
+            // 这里覆盖默认的toString方法
+            add.toString = () => {
+                return params.reduce((p, v) => p + v, 0)
+            }
+            return add
+        }
+
+        console.log(curring(1)(2, 3)(4).toString())
+
+        // 2. 使用普通函数实现的
+        // function curringAdd() {
+        //     let args = Array.prototype.slice.call(arguments)//[].slice.call(arguments)
+        //     // 第一次进来不会进这个函数，第二次以及之后才会进这个
+        //     let inner = function () {
+        //         args.push(...arguments)
+        //         return inner
+        //     }
+        //     inner.toString = function () {
+        //         return args.reduce(function (p, v) {
+        //             return p + v
+        //         }, 0)
+        //     }
+        //     return inner
+        // }
+        // console.log(curringAdd(1)(2, 3)(4).toString())
+    </script>
+</body>
+
+</html>
