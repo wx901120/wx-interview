@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>箭头函数this</title>
+</head>
+
+<body>
+    <script>
+        // 1. 
+        function foo() {
+            console.log('foo,', this);// window
+            let obj = {
+                getThis: () => {// 它也是沿着上面找，发现了 foo 函数，继承了它的this
+                    console.log('getThis', this);
+                    return () => {
+                        console.log(this);// 那么它也是同样的道理
+                    }
+                }
+            }
+            return obj
+        }
+        // foo().getThis()()
+        // 2.
+        let obj = {
+            getThis: function () {
+                console.log('getThis', this);// 指向obj，
+                return () => {
+                    console.log(this);// 它其实是继承了父作用域的this指向
+                }
+            }
+        }
+        obj.getThis()()
+    </script>
+</body>
+
+</html>

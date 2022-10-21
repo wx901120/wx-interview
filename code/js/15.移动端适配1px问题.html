@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移动端1px问题</title>
+    <style>
+        .wrap{
+            border: 1px solid pink;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 参考：https://zhuanlan.zhihu.com/p/535456539 -->
+    <div class="wrap">ab</div>
+    <script type="text/javascript">
+        // 动态设置 viewport 的 initial-scale
+        var viewport = document.querySelector("meta[name=viewport]");
+        var dpr = window.devicePixelRatio || 1;
+        var scale = 1 / dpr;
+        viewport.setAttribute(
+            "content",
+            "width=device-width," +
+            "initial-scale=" +
+            scale +
+            ", maximum-scale=" +
+            scale +
+            ", minimum-scale=" +
+            scale +
+            ", user-scalable=no"
+        );
+        // 计算 rem font-size
+        var clientWidth = document.documentElement.clientWidth || document.body.clientWidth;
+        clientWidth > 750 && (clientWidth = 750);
+        var ft = (clientWidth / 7.5).toFixed(2); // 以750设计稿为例
+        document.documentElement.style.fontSize = ft + "px";
+
+    </script>
+</body>
+
+</html>
