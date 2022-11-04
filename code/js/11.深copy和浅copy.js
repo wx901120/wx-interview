@@ -38,8 +38,71 @@ function deepCopy(obj, cache = []) {
     return copy
 }
 
-let originObj = { a: 1, b: { e: 1 }, c: [1, 2, 3,], d: function () { } }
+let originObj = { a: 1, b: { e: 1 }, c: [1, 2, 3,], d: function () { }, e: new Map() }
 const deep = deepCopy(originObj)
 deep.a = 2
 console.log(originObj.a);// 1
 console.log(deep.b === originObj.b);// false
+
+
+/**
+ * 1. 对于函数，正则，日期，ES6新对象，需要重写创建
+ * 2. 需要处理循环引用的问题
+ */
+// 面试用这个：另外一种方式
+function _deepClone(originObj, map = new WeakMap()) {
+    // 1. 基本数据类型直接返回
+    if (typeof originObj !== 'object' || originObj === null) return originObj
+    // 2. 函数，正则，日期，ES6新对象，执行构造器，返回新的对象
+    const constructor = originObj.constructor // 如：Object(){}
+    // 匹配任何开头为 Function结尾也是Function  constructor.name: 'Object'
+    if (/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) return new constructor(originObj)
+
+    // 3. 避免循环引用
+    if (map.get(originObj)) return map.get(originObj)
+    map.set(originObj, true)
+
+    // 4.针对数组和对象区分
+    const cloneTarget = Array.isArray(originObj) ? [] : {}
+
+    //5.递归遍历
+    Object.keys(originObj).forEach(key => {
+        cloneTarget[key] = _deepClone(originObj[key], map)
+    })
+    return cloneTarget
+}
+const deep2 = _deepClone(originObj)
+
+// 浅copy
+function _shallowClone(target) {
+    if (typeof target !== 'object' || target === null) return target
+
+    const constructor = target.constructor
+    if (/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) return target
+
+    const cloneTarget = Array.isArray(target) ? [] : {}
+    Object.keys(target).forEach(key => {
+        cloneTarget[key] = target[key]
+    })
+    return cloneTarget
+}
+
+
+// 第二次
+function _deepClone2(rawObj, map = new Map()) {
+    if (typeof rawObj !== 'object' || rawObj === null) return rawObj
+
+    const constructor = rawObj.constructor
+
+    // 函数，正则，日期
+    if (/^(Function|RegExp|Map|Set)/g.test(constructor.name)) return new constructor(rawObj)
+
+    if (map.has(rawObj)) return map.get(rawObj)
+    map.set(rawObj, true)
+
+    let cloneObj = Array.isArray(rawObj) ? [] : {}
+
+    Object.keys(rawObj).forEach(key => {
+        cloneObj[key] = _deepClone2(rawObj[key], map)
+    })
+}

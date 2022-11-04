@@ -46,6 +46,38 @@
         // }
         // console.log(curringAdd(1)(2, 3)(4).toString())
     </script>
+    <script>
+        // 柯里化的变体
+        function sum(...args) {
+            let params = args
+            const add = (...newArgs) => {
+                if (newArgs.length === 0) {
+                    return params.reduce((pre, cur) => pre + cur, 0)
+                } else {
+                    params = [...params, ...newArgs]
+                    return add
+                }
+            }
+            return add
+        }
+        console.log(sum(1, 2)(3)()) // 6
+        console.log(sum(1)(2)(3)()) // 6
+        console.log(sum(1, 2, 4)(4)()) // 11
+
+
+        // function _curring(...args) {
+        //     let params = args
+        //     const add = (...rest) => {
+        //         if (rest.length === 0) {
+        //             return params.reduce((pre, cur) => pre + cur, 0)
+        //         } else {
+        //             params = [...params, ...rest]
+        //             return add
+        //         }
+        //     }
+        //     return add
+        // }
+    </script>
 </body>
 
 </html>

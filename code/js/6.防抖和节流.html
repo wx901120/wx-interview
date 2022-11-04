@@ -21,32 +21,54 @@
             let b = Math.floor(Math.random() * 255)
             document.body.style.background = `rgb(${r},${g},${b})`
         }
-        // 节流（简单的节流）：每次触发的都是第一次那个
+        // 节流（1. 简单的节流）：每次触发的都是第一次那个
         function throttle(cb, delay) {
             let last = 0
-            return (params) => {
+            return (...args) => {
                 let now = new Date()
                 // 超出节流时间就需要触发
                 if (now - last >= delay) {
-                    cb(params)
+                    cb(...args)
+                    last = now
+                }
+            }
+        }
+        // 节流（2. 更符合规范的节流）
+        function throttle2(cb, delay) {
+            let last = 0
+            let timer = null
+            return (...args) => {
+                const now = new Date()
+                const remain = delay - (now - last)
+                // 第一次上来会里面进入这里，因为delay-now肯定小于0
+                if (remain <= 0) {
+                    cb(...args)
+                    clearTimeout(timer)
+                    last = now
+                } else if (!timer) {
+                    clearTimeout(timer)
+                    timer = setTimeout(() => {
+                        cb(...args)
+                        last = now
+                    }, remain)
                 }
             }
         }
         // 防抖: 这个只会触发最后一次事件
         function debounce(cb, delay) {
             let timer = null
-            return (params) => {
+            return (...args) => {
                 // 清除旧的
                 if (timer) clearTimeout(timer)
                 // 设置新的
                 timer = setTimeout(() => {
-                    cb(params)
+                    cb(...args)
                 }, delay);
             }
         }
         // 最终版
         // function 
-        document.addEventListener('resize', throttle(fn1, 200))
+        window.addEventListener('resize', throttle2(fn1, 2000))
     </script>
     <!-- 下面是普通函数实现 -->
     <script>
@@ -92,7 +114,7 @@
         //     }
         // }
         // window.addEventListener('resize', throttle(fn, 2000))
-        // 2. 面试官想让你写的节流   这种方式是一开始就会执行，并且结束时，也会执行一次
+        // 3. 面试官想让你写的节流   这种方式是一开始就会执行，并且结束时，也会执行一次
         // function throttle(fn, delay) {
         //     let pre = 0
         //     let timer = null
@@ -107,7 +129,7 @@
         //             fn.apply(_self, args)
         //             clearTimeout(timer)
         //             pre = now
-        //         } else if (!timer) {// 有剩余时间并且有timer，那么就要在剩余时间到了后再执行一次
+        //         } else if (!timer) {// 有剩余时间并且没有timer，就需要创建一个定时器在剩余时间到了后执行它，如果有timer，那执行timer就可以
         //                 clearTimeout(timer)
         //             timer = setTimeout(() => {
         //                 fn.apply(_self, args)
@@ -146,6 +168,38 @@
         // }
 
         // btn.addEventListener('click', debounce(click, 1000))
+
+        // 第二次：抖动的时候先把之前的清除掉，重写建立一个新的
+        // function _debounce(fn, delay) {
+        //     let timer
+        //     return (...args) => {
+        //         if (timer) clearTimeout()
+        //         timer = setTimeout(() => {
+        //             fn(...args)
+        //         }, delay);
+        //     }
+        // }
+
+        // function _throttle(cb, delay) {
+        //     let last = 0
+        //     let timer = null
+        //     return (...args) => {
+        //         let now = new Date()
+        //         let remain = delay - (now - last)
+        //         if (remain <= 0) {
+        //             cb(...args)
+        //             clearTimeout(timer)
+        //             last = now
+        //         }else if(!timer){
+        //             clearTimeout(timer)
+        //             timer = setTimeout(() => {
+        //                 cb(...args)
+        //                 last = now
+        //             }, remain);
+        //         }
+
+        //     }
+        // }
 
     </script>
 </body>

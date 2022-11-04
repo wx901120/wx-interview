@@ -7,15 +7,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=2">
     <title>Document</title>
     <style>
-        .wrap{
-            border: 1px solid pink;
+        /* .wrap {
+            width: 400px;
+            height: 600px;
+            border: 1px solid red;
+            background-color: burlywood;
+        }
+
+        .inner {
+            width: 50%;
+            padding-bottom: 50%;
+            background-color: rgb(63, 59, 54);
+
+        } */
+
+        .aside {
+            position: absolute;
+            
+            width: 300px;
+            /* float: left; */
+            background: yellow;
+        }
+
+        .main {
+            /* BFC */
+            overflow: hidden;
+            background: aqua;
         }
     </style>
 </head>
 
 <body>
-    <div class="wrap">ab</div>
-    <script src="./11.深copy和浅copy.js"></script>
+
+    <div class="aside">ab</div>
+    <div class="main">cd</div>
+    <!-- <iframe src="https://www.baidu.com/"
+    title="iframe Example 1"
+    width="400"
+    height="300"></iframe> -->
+    <!-- 查看shadow DOM -->
+    <!-- <video id='test'></video> -->
+    <!-- <script src="./18. http请求控制最大并发数.js"></script> -->
+    <!-- <script src="./43.with+proxy实现一个简单的沙箱.js"></script> -->
 
 </body>
 
