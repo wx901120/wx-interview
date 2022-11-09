@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <img id="scream" src="../media/canvas-img.png">
+    <canvas id="canvas"></canvas>
+    <script>
+        // https://segmentfault.com/a/1190000009738785
+        // 目标：将图像转换成0，1的二维数组
+        document.getElementById('scream').onload = function () {
+            let canvas = document.getElementById('canvas')
+            let ctx = canvas.getContext('2d')
+            let img = document.getElementById('scream')
+            canvas.width = img.width
+            canvas.height = img.height
+            // 因为高度是200，所以
+            let coordinates = Array.from({ length: canvas.height }, () => Array())
+            // 1. drawImage可以将图片画到canvas上
+            ctx.drawImage(img, 0, 0)
+            // 2. getImageData: 返回 ImageData 对象，该对象拷贝了画布指定矩形的 像素 数据
+            let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data
+            console.log(imageData);
+            // imageData中第一个像素的信息可以通过下面方式获取：
+            // red = imgData.data[0]; // 211
+            // green = imgData.data[1]; // 228
+            // blue = imgData.data[2]; // 200
+            // alpha = imgData.data[3]; // 255
+
+            // 3. 每四个是一个像素点
+            let row = 0, col = 0;
+            for (let i = 0, len = imageData.length; i < len; i += 4) {
+                let red = imageData[i],//红色色深
+                    green = imageData[i + 1],//绿色色深
+                    blue = imageData[i + 2],//蓝色色深
+                    alpha = imageData[i + 3];//透明度
+                //把每个像素点，以二位数组的形式展开
+                if (`${red} ${green} ${blue}` === '211 228 200') {
+                    coordinates[row][col] = 0;
+                } else {
+                    coordinates[row][col] = 1;
+                }
+                col++
+                if (col >= canvas.width) {
+                    row++
+                    col = 0
+                }
+            }
+            console.log(coordinates);
+            // 4. 运用岛屿问题计算有多少个岛屿和每个岛屿的面积
+        }
+    </script>
+</body>
+
+</html>

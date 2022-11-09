@@ -39,7 +39,7 @@ const timeout = i => new Promise(resolve => {
         console.log(i);
         resolve(i)
     }, 1000);
-}, i)
+})
 const urls = Array.from({
     length: 10
 }, (v, i) => `/api/test?num=${i}`)

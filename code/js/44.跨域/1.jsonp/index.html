@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /**
+         * 缺点：
+         * 1. 只能发送get请求
+         * 2. 不安全 可能会被xss攻击
+         */
+
+        function jsonp({ url, params, cb }) {
+            return new Promise((resolve, reject) => {
+                let script = document.createElement('script')
+                window[cb] = function (data) {
+                    resolve(data)
+                    document.body.removeChild(script)
+                }
+                params = { ...params, cb } // wd=a&cb=xxx
+                let arr = []
+                for (const key in params) {
+                    arr.push(`${key}=${params[key]}`)
+                }
+                script.src = `${url}?${arr.join('&')}`
+                document.body.appendChild(script)
+            })
+        }
+        jsonp({
+            url: 'http://localhost:3000/search',
+            params: { wd: '我爱你' },
+            cb: 'jQuery1102034484008711592007_1667652382785' // jQuery1102034484008711592007_1667652382785
+        }).then(res => {
+            console.log(res);
+        })
+        // https://www.baidu.com/sugrec?wd=a&cb=jQuery1102034484008711592007_1667652382785
+        // jQuery1102034484008711592007_1667652382785({ "q": "a", "p": false, "g": [{ "type": "sug", "sa": "s_1", "q": "安徽黄山千年石坝遇干旱露出水面" }, { "type": "sug", "sa": "s_2", "q": "安徽省委团省委吴方媛" }, { "type": "sug", "sa": "s_3", "q": "安吉尔被指虚假宣传" }, { "type": "sug", "sa": "s_4", "q": "a站" }, { "type": "sug", "sa": "s_5", "q": "a股" }, { "type": "sug", "sa": "s_6", "q": "爱我久久视频免费" }, { "type": "sug", "sa": "s_7", "q": "apple苹果官网" }, { "type": "sug", "sa": "s_8", "q": "a4纸尺寸是多少厘米" }, { "type": "sug", "sa": "s_9", "q": "abcc的四字词语" }, { "type": "sug", "sa": "s_10", "q": "a3纸多大尺寸" }], "slid": "200656457032441", "queryid": "0xefb67ef8d7e2f9" })
+
+    </script>
+</body>
+
+</html>

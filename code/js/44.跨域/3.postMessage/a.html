@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>a</title>
+</head>
+
+<body>
+    <div>ababv</div>
+    <div id="parent"></div>
+    <iframe id="iframe" src="http://localhost:4000/b.html" onload="load()"></iframe>
+    <script>
+        let parent = document.getElementById('parent')
+        function load() {
+            let iframe = document.getElementById('iframe')
+            // iframe.contentWindow: 可以访问内联框架中的window对象，即iframe中的window对象
+            // 父用iframe的window跟iframe说话
+            iframe.contentWindow.postMessage('我爱你', 'http://localhost:4000')
+            window.onmessage = function (e) {
+                parent.innerHTML = `iframe对我说：${e.data}`
+            }
+        }
+    </script>
+</body>
+
+</html>

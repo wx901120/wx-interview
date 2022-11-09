@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    hello
+    <script>
+        let xhr = new XMLHttpRequest()
+        document.cookie = 'name=wyc'
+        xhr.withCredentials = true // 容许带上凭证
+        xhr.open('GET', 'http://localhost:4000/getData')
+        xhr.setRequestHeader('name', 'wx')
+        xhr.send()
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                    // console.log((xhr.response));
+                    // getAllResponseHeaders 注意： 对于复合请求（multipart requests），这个方法返回当前请求的头部，而不是最初的请求的头部。
+                    console.log((xhr.getAllResponseHeaders()));
+                    console.log(xhr.getResponseHeader('wx'));
+                }
+            }
+        }
+        xhr.onload = function () {
+            // console.log((xhr.getAllResponseHeaders()));
+        }
+
+
+    </script>
+</body>
+
+</html>

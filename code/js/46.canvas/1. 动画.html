@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        // requestAnimationFrame的优势
+        // 1.它的刷新频率跟浏览器的绘制频率是一致的，可以防止掉帧
+        // 2.当页面不在可视区域或者被隐藏时，它也会暂停
+        const canvas = document.getElementById('canvas')
+        const ctx = canvas.getContext('2d')
+        ctx.fillStyle = 'purple'
+
+        const step = 1
+        let xPosition = 0
+        move()
+
+        function move() {
+            ctx.clearRect(0, 0, 600, 600)
+            ctx.fillRect(xPosition, 0, 300, 150)
+            xPosition += step
+            if (xPosition <= 300) {
+                requestAnimationFrame(() => {
+                    move()
+                })
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>

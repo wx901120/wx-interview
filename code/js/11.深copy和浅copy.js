@@ -106,3 +106,38 @@ function _deepClone2(rawObj, map = new Map()) {
         cloneObj[key] = _deepClone2(rawObj[key], map)
     })
 }
+// 第三次
+const obj = {
+    a: 1,
+    b: {
+        c: 2
+    },
+    d: function () { },
+    e: [1, 2, 3],
+    i: new RegExp(),
+    h: new Date(),
+    f: new Set([1, 2]),
+    g: new Map([['key', 'value']])
+}
+
+function _deepClone(target, map = new Map()) {
+    if (typeof target !== 'object' || target === null) return target
+    const constructor = target.constructor
+    // if(target instanceof Function) return new Function(target)
+    // if(target instanceof Map) return new Map(target)
+    if (/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) return new constructor(target)
+
+    if (map.get(target)) return map.get(target)
+    map.set(target, true)
+
+    let cloneObj = Array.isArray(target) ? [] : {}
+    Object.keys(target).forEach(key => {
+        cloneObj[key] = _deepClone(target[key], map)
+    })
+    return cloneObj
+}
+let clone = _deepClone(obj)
+obj.a = 2
+obj.a.b = 3
+obj.e.push(3)
+console.log(clone);

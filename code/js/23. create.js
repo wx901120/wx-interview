@@ -1,7 +1,7 @@
 /**
  * 1. Object.create() 创建一个新对象，使用参数中传进去的参数作为新创建对象的原型
  */
-const obj = Object.create(null)
+const obj = Object.create(null)// 让obj.__proto__ = null
 console.log(obj);
 
 Object.prototype._create = function (obj) {
