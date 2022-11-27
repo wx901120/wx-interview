@@ -5,6 +5,7 @@ class EventEmitter {
     constructor() {
         // key: 事件名  value: [callback,callback2,...]
         this.map = new Map()
+        // this.obj = {}
     }
     // 订阅
     on(name, callback) {
@@ -13,6 +14,11 @@ class EventEmitter {
         } else {
             this.map.set(name, [callback])
         }
+        // if(this.obj[name]){
+        //     this.obj[name].push(callback)
+        // }else {
+        //     this.obj[name] = [callback]
+        // }
     }
     // 删除订阅
     off(name, callback) {
@@ -22,6 +28,7 @@ class EventEmitter {
             this.map.set(name, [])
         }
         this.map.set(name, this.map.get(name).filter(fn => fn !== callback))// 因为这里可以出来[]，所以下面emit要判断length
+        // this.obj[name] =  this.obj[name].filter(fn=>fn !== callback)
     }
     // 发射事件
     emit(name, ...args) {

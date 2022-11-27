@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas 绘制二叉树</title>
+    <style>
+        .main{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <canvas id="canvas" width="1000" ></canvas>
+    </div>
+    <script type="module">
+        import root from './tree.js'
+
+        const canvas = document.getElementById('canvas')
+        const ctx = canvas.getContext('2d')
+
+        const deep = getDeepOfTree(root)
+        // deep : 4
+        let distance = 1
+        for (let i = 2; i < deep; i++) {
+            distance = (distance + 2) * 2 - 2
+        }
+        //distance: 10
+        const unit = 1000 / (Math.pow(2, deep - 1) * 4 + 8)
+        // unit: 25 每个正方形的长度
+        canvas.setAttribute('height', deep * unit * 4)
+        // height: 400
+
+        const rootX = (1000 - unit) / 2
+        const rootY = unit
+        preOrderTraverse(root, rootX, rootY, distance)
+
+
+        function preOrderTraverse(root, x, y, distance) {
+            drawRect(root.value, x, y) // 绘制节点
+            if (root.left) {
+                drawLeftLine(x, y + unit, distance)
+                // 每增加一层，x的距离都会减少
+                preOrderTraverse(root.left, x - (distance + 1) * unit, y + 3 * unit, distance / 2 - 1)
+            }
+            if (root.right) {
+                drawRightLine(x + unit, y + unit, distance)
+                preOrderTraverse(root.right, x + (distance + 1) * unit, y + 3 * unit, distance / 2 - 1)
+            }
+        }
+
+        function drawRect(text, x, y) {
+            ctx.fillRect(x, y, unit, unit)
+            ctx.font = "14px serif"
+            ctx.fillText(text, x + unit, y + unit) // 方块的右下角
+        }
+
+        function drawLeftLine(x, y, distance) {
+            ctx.moveTo(x, y)
+            // x向左移动 distance * unit  是10个小方块的长度
+            // y向下移动 2个小方块的长度  这个是固定的
+            ctx.lineTo(x - distance * unit, y + 2 * unit)
+            ctx.stroke()
+        }
+
+        function drawRightLine(x, y, distance) {
+            ctx.moveTo(x, y)
+            ctx.lineTo(x + distance * unit, y + 2 * unit)
+            ctx.stroke()
+        }
+
+        // 树的深度
+        function getDeepOfTree(root) {
+            let depth = 0
+            let queue = []
+            queue.push(root)
+            while (queue.length) {
+                let len = queue.length
+                while (len--) {
+                    let node = queue.shift()
+                    node.left && queue.push(node.left)
+                    node.right && queue.push(node.right)
+                }
+                depth++
+            }
+            return depth++
+        }
+
+    </script>
+</body>
+
+</html>

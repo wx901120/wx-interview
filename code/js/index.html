@@ -5,26 +5,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="max-age=7200" />
     <title>Document</title>
+
     <style>
-        /* .wrap {
-            width: 400px;
-            height: 600px;
-            border: 1px solid red;
-            background-color: burlywood;
-        }
-
-        .inner {
-            width: 50%;
-            padding-bottom: 50%;
-            background-color: rgb(63, 59, 54);
-
-        } */
-
+  
         .aside {
-            position: absolute;
-            
             width: 300px;
+            height: 500px;
             float: left;
             background: yellow;
         }
@@ -32,21 +20,20 @@
         .main {
             /* BFC */
             overflow: hidden;
+            height: 500px;
             background: aqua;
-        }
-        .test{
-            width: 10em;
-            height: 10em;
-            background-color: pink;
         }
     </style>
 </head>
 
 <body>
+        <div class="aside"></div>
+        <div class="main"></div>
+
 
     <!-- <div class="aside">ab</div>
     <div class="main">cd</div> -->
-    <div class="test">a</div>
+    <!-- <div class="test">a</div> -->
     <!-- <iframe src="https://www.baidu.com/"
     title="iframe Example 1"
     width="400"
@@ -55,6 +42,7 @@
     <!-- <video id='test'></video> -->
     <!-- <script src="./18. http请求控制最大并发数.js"></script> -->
     <script src="./36.compose函数组合.js"></script>
+    <script src="https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/js/lib/esl-d776bfb1aa.js"></script>
 
 </body>
 

@@ -9,6 +9,7 @@ function toThousands(num) {
         // 剩余的还没分割的
         num = num.substring(0, num.length - 3)// 1234 => 1
     }
+    // 不够三个了
     ans = num + ans
     return ans
 }
@@ -27,6 +28,7 @@ function toThousands(num) {
 //     return ans
 // }
 // console.log(divideThousand(1231231232312));
+// 第二次
 function divideThousand(nums) {
     nums = nums.toString()
     let ans = ''

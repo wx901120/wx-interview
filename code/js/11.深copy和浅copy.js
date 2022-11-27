@@ -49,7 +49,7 @@ console.log(deep.b === originObj.b);// false
  * 1. 对于函数，正则，日期，ES6新对象，需要重写创建
  * 2. 需要处理循环引用的问题
  */
-// 面试用这个：另外一种方式
+// 面试用这个
 function _deepClone(originObj, map = new WeakMap()) {
     // 1. 基本数据类型直接返回
     if (typeof originObj !== 'object' || originObj === null) return originObj

@@ -154,16 +154,16 @@ class MyPromise {
 }
 
 // debugger
-console.log('1');
-const p1 = new MyPromise((resolve, reject) => {
-    console.log('2');
-    resolve('c')
-    console.log('5');
-})
-p1.then(val => {
-    console.log(3);
-})
-console.log(4);
+// console.log('1');
+// const p1 = new MyPromise((resolve, reject) => {
+//     console.log('2');
+//     resolve('c')
+//     console.log('5');
+// })
+// p1.then(val => {
+//     console.log(3);
+// })
+// console.log(4);
 
 
 // console.log('1');
@@ -178,42 +178,46 @@ console.log(4);
 // console.log(4);
 
 // 面试题
-// Promise.resolve()
-//   .then(function() {
-//     console.log("promise0");
-//   })
-//   .then(function() {
-//     console.log("promise5");
-//   }).then(function(){
-//     console.log('aa');
-//   });
-// setTimeout(() => {
-//   console.log("timer1");
-//   Promise.resolve().then(function() {
-//     console.log("promise2");
-//   });
-//   Promise.resolve().then(function() {
-//     console.log("promise4");
-//   });
-// }, 0);
-// setTimeout(() => {
-//   console.log("timer2");
-//   Promise.resolve().then(function() {
-//     console.log("promise3");
-//   });
-// }, 0);
-// Promise.resolve().then(function() {
-//   console.log("promise1");
-// }).then(function(){
-//     console.log('b');
-// });
-// console.log("start");
-// 微：[promise0,promise1,promise5,b,aa]
-// 宏：[timer1,timer2]
+Promise.resolve()
+  .then(function() {
+    console.log("promise0");
+  })
+  .then(function() {
+    console.log("promise5");
+  })
+  .then(function(){
+    console.log('aa');
+  });
+setTimeout(() => {
+  console.log("timer1");
+  Promise.resolve().then(function() {
+    console.log("promise2");
+  });
+  Promise.resolve().then(function() {
+    console.log("promise4");
+  });
+}, 0);
+setTimeout(() => {
+  console.log("timer2");
+  Promise.resolve().then(function() {
+    console.log("promise3");
+  });
+}, 0);
+Promise.resolve().then(function() {
+  console.log("promise1");
+}).then(function(){
+    console.log('b');
+});
+console.log("start");
+
+// 微：[]
+// 宏：[]
 // start
-//promise0
-//promise1
+// promise0
+// promise1
 // promise5
+// b
+// aa
 // timer1
 // promise2
 // promise4
