@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>requestAnimationFrame-Demo</title>
+    <style>
+        body {
+            background: #444444;
+            color: white;
+            font: 20px/1.51 Helvetica, sans-serif;
+            margin: 0 auto;
+            max-width: 900px;
+            padding: 20px;
+            min-height: 1000vh;
+        }
+
+        .item {
+            position: fixed;
+            border: 4px solid #9BFFBB;
+            height: 60px;
+            width: 100px;
+            background: #333;
+            padding: 20px;
+            top: 20px;
+        }
+
+        .second {
+            top: 140px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="item">Scroll with rAF</div>
+    <div class="item second">Scroll with _.throttle</div>
+    <script type="module">
+        import {debounce, throttle} from './index.js'
+        // import {throttle} from 'https://cdn.jsdelivr.net/npm/lodash-es@4.17.21/+esm'
+        //  requestAnimationFrame方式
+        var latestKnownScrollY = 0,
+            ticking = false,
+            item = document.querySelectorAll('.item');
+
+        function update() {
+            // reset the tick so we can
+            // capture the next onScroll
+            ticking = false;
+            item[0].style.width = latestKnownScrollY + 100 + 'px';
+        }
+
+        function onScroll() {
+            latestKnownScrollY = window.scrollY; //No IE8
+            if(!ticking){
+                requestAnimationFrame(update)
+            }
+            ticking = true
+        }
+        window.addEventListener('scroll', onScroll, false);
+        // 节流方式
+        function throttle_version() {
+            item[1].style.width = window.scrollY + 100 + 'px'
+        }
+        // 其实lodash库里面也使用了requestAnimationFrame，所以你在界面上看到的一样的效果
+        window.addEventListener('scroll', throttle(throttle_version, 16))
+
+    </script>
+</body>
+
+</html>

@@ -12,6 +12,8 @@
     <div>
         <button id="btn">按钮</button>
     </div>
+
+    <!-- 防抖和节流的不同点：https://css-tricks.com/debouncing-throttling-explained-examples/ -->
     <!-- 箭头函数实现 -->
     <script>
         const fn1 = (...args) => {
@@ -25,7 +27,7 @@
         function throttle(cb, delay) {
             let last = 0
             return (...args) => {
-                let now = new Date()
+                let now = Date.now()
                 // 超出节流时间就需要触发
                 if (now - last >= delay) {
                     cb(...args)
@@ -35,10 +37,14 @@
         }
         // 节流（2. 更符合规范的节流）
         function throttle2(cb, delay) {
+            if(typeof cb !== 'function'){
+                throw new Error('Expected a function')
+            }
+
             let last = 0
             let timer = null
             return (...args) => {
-                const now = new Date()
+                const now = Date.now()
                 const remain = delay - (now - last)
                 // 第一次上来会里面进入这里，因为delay-now肯定小于0
                 if (remain <= 0) {
@@ -56,6 +62,12 @@
         }
         // 防抖: 这个只会触发最后一次事件
         function debounce(cb, delay) {
+            // 兼容性处理
+            if(typeof cb !== 'function') {
+                throw new TypeError('Expected a function')
+            }
+            delay = +delay || 0
+
             let timer = null
             return (...args) => {
                 // 清除旧的
@@ -72,13 +84,13 @@
     </script>
     <!-- 下面是普通函数实现 -->
     <script>
-        const fn = () => {
-            console.log('执行了');
-            let r = Math.floor(Math.random() * 255)
-            let g = Math.floor(Math.random() * 255)
-            let b = Math.floor(Math.random() * 255)
-            document.body.style.background = `rgb(${r},${g},${b})`
-        }
+        // const fn = () => {
+        //     console.log('执行了');
+        //     let r = Math.floor(Math.random() * 255)
+        //     let g = Math.floor(Math.random() * 255)
+        //     let b = Math.floor(Math.random() * 255)
+        //     document.body.style.background = `rgb(${r},${g},${b})`
+        // }
         // 节流
         // 1. 最基本实现
         // 特点：这种方式第一次执行需要等待2s,而不是立马执行，不过它在停止改变窗口之后，还是会执行一次

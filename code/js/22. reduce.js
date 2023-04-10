@@ -6,6 +6,7 @@ const a = [1, 2, 3]
 console.log(a.reduce((pre, curValue, curIndex, arr) => pre + curValue, 0))
 
 Array.prototype._reduce = function (exc, initialValue = 0) {
+    if(typeof exc !== 'function') return;
     let res = initialValue
     this.forEach((value, index, arr) => {
         res = exc(res, value, index, arr)

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件委托/代理</title>
+    <style>
+        .ul{
+            border: 1px dashed black;
+            background-color: rgb(100, 100, 237);
+            opacity: 0.3;
+        }
+        .item{
+            background-color: #ccc;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <ul class="ul">
+        <li class="item">.</li>
+        <li class="item">.</li>
+        <li class="item">.</li>
+    </ul>
+    <script type="text/javascript">
+        /**
+         * 描述
+            请补全JavaScript代码，要求如下：
+            1. 给"ul"标签添加点击事件
+            2. 当点击某"li"标签时，该标签内容拼接"."符号。如：某"li"标签被点击时，该标签内容为".."
+            注意：
+            1. 必须使用DOM0级标准事件（onclick）
+        */
+        /**
+         * 方式一：没有判断点击li才会触发，所以这种方式点了外层的ul也会
+        */
+        // let ul = document.querySelector('ul')
+        // ul.onclick = function (e) {
+        //     e.target.innerText += '.'
+        // }
+        /**
+         * 方式二：回调函数中进行判断
+        */
+        let el = document.querySelector('ul')
+        el.onclick = e => {
+            e = e || window.event
+            if (e.target.nodeName.toLowerCase() === 'li') {
+                e.target.innerText += '.'
+            }
+        }
+    </script>
+</body>
+
+</html>

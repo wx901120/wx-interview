@@ -4,6 +4,7 @@
  */
 // 这里不能直接使用箭头函数，否则无法访问到 this
 Array.prototype._map = function (exc) {
+    if(typeof exc !== 'function') return;
     const res = []
     // 这里的arr，还是利用了forEach遍历数组的参数
     this.forEach((item, index, arr) => {

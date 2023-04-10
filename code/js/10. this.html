@@ -23,17 +23,44 @@
             }
             return obj
         }
-        // foo().getThis()()
+        // foo().getThis()() // window.foo().getThis()
         // 2.
         let obj = {
             getThis: function () {
-                console.log('getThis', this);// 指向obj，
+                console.log('getThis', this);// 指向obj
                 return () => {
                     console.log(this);// 它其实是继承了父作用域的this指向
                 }
             }
         }
-        obj.getThis()()
+        // obj.getThis()()
+
+        // 3
+        var name = '123';
+
+        var obj3 = {
+            name: '456',
+            print: function () {
+                console.log(this); // obj3
+                function a() {
+                    console.log(this.name);// 此时的this变成了widnow了
+                }
+                a(); // window.a()
+            }
+        }
+        // obj3.print();
+        // 4.普通函数和肩头函数的this指向问题
+        const obj4 = {
+            fn1: () => console.log(this),
+            fn2: function () {console.log(this)}
+        }
+
+        obj4.fn1();// window
+        obj4.fn2();// obj4
+
+        const x = new obj4.fn1();// 这里去new一个箭头函数，会报错的
+        const y = new obj4.fn2();
+
     </script>
 </body>
 

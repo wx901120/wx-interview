@@ -5,6 +5,7 @@
 const a = [1, 2, 3]
 console.log(a.filter((value, index, arr) => value > 1))
 Array.prototype._filter = function (exc) {
+    if(typeof fn !== 'function') return;
     const ans = []
     this.forEach((value, index, arr) => {
         // 根据返回的结果来返回

@@ -50,24 +50,24 @@ console.log(deep.b === originObj.b);// false
  * 2. 需要处理循环引用的问题
  */
 // 面试用这个
-function _deepClone(originObj, map = new WeakMap()) {
+function _deepClone(target, map = new Map()) {
     // 1. 基本数据类型直接返回
-    if (typeof originObj !== 'object' || originObj === null) return originObj
+    if (typeof target !== 'object' || target === null) return target
     // 2. 函数，正则，日期，ES6新对象，执行构造器，返回新的对象
-    const constructor = originObj.constructor // 如：Object(){}
+    const constructor = target.constructor // 如：Object(){}
     // 匹配任何开头为 Function结尾也是Function  constructor.name: 'Object'
-    if (/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) return new constructor(originObj)
+    if (/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) return new constructor(target)
 
     // 3. 避免循环引用
-    if (map.get(originObj)) return map.get(originObj)
-    map.set(originObj, true)
+    if (map.get(target)) return map.get(target)
+    map.set(target, true)
 
     // 4.针对数组和对象区分
-    const cloneTarget = Array.isArray(originObj) ? [] : {}
+    const cloneTarget = Array.isArray(target) ? [] : {}
 
     //5.递归遍历
-    Object.keys(originObj).forEach(key => {
-        cloneTarget[key] = _deepClone(originObj[key], map)
+    Object.keys(target).forEach(key => {
+        cloneTarget[key] = _deepClone(target[key], map)
     })
     return cloneTarget
 }
@@ -141,3 +141,7 @@ obj.a = 2
 obj.a.b = 3
 obj.e.push(3)
 console.log(clone);
+
+
+// js新出的深copy全局方法：structuredClone（）
+// structuredClone()

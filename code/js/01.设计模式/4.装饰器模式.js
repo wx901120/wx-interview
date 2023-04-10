@@ -1,6 +1,4 @@
-function fuc() {
-    console.log(2);
-}
+
 Function.prototype.before = function (beFn) {
     let self = this;
     return function () {// 妙呀～～～
@@ -15,7 +13,9 @@ Function.prototype.after = function (afFn) {
         return afFn.apply(this, arguments); // 后执行插入到后面的方法
     };
 };
-
+function fuc() {
+    console.log(2);
+}
 function fuc1() {
     console.log(1);
 }

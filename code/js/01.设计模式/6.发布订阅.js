@@ -27,7 +27,10 @@ class EventEmitter {
         if (!callback) {
             this.map.set(name, [])
         }
-        this.map.set(name, this.map.get(name).filter(fn => fn !== callback))// 因为这里可以出来[]，所以下面emit要判断length
+        this.map.set(
+            name,
+            this.map.get(name).filter(fn => fn !== callback)
+        ) // 因为这里可以出来[]，所以下面emit要判断length
         // this.obj[name] =  this.obj[name].filter(fn=>fn !== callback)
     }
     // 发射事件
@@ -48,12 +51,38 @@ class EventEmitter {
     }
 }
 function foo(...args) {
-    console.log(...args);
+    console.log(...args)
 }
 const events = new EventEmitter()
 events.on('a', foo)
 events.on('a', foo)
 events.emit('a', 1, 2, 3)
 events.off('a', foo)
-console.log(events);
+console.log(events)
 events.emit('a', 1, 2, 3)
+
+// 牛客
+class EventEmitter2 {
+    constructor() {
+        // key: name, value: Set[cb,cb,...]
+        this.map = new Map()
+    }
+    on(name, cb) {
+        if (!this.map.has(name)) {
+            this.map.set(name, new Set())
+        }
+        this.map.get(name).add(cb)
+    }
+    emit(name, ...args) {
+        if (this.map.has(name)) {
+            this.map.get(name).forEach(fn => {
+                fn.call(this, ...args)
+            })
+        }
+    }
+    off(name, cb) {
+        if (!this.map.has(name) || !cb) return
+        const filterCb = this.map.get(name).filter(fn => fn !== cb)
+        this.map.set(name, filterCb)
+    }
+}

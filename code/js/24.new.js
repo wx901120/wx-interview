@@ -15,31 +15,24 @@
 //     return res
 // }
 function Foo() {
-    // return 'ab'
     this.name = 'wx'
     this.age = 18
+    // return 'ab'
+    // return {
+    //     a: 'wx',
+    //     b: 18
+    // }
 }
-const fn = new Foo()
-console.log(fn);
+// const fn = new Foo()
+// console.log(fn);
 
 const _new = function (fn, ...args) {
-    let obj = Object.create({})
+    let obj = {}//或者Object.create({})
     obj.__proto__ = fn.prototype
     // 将obj赋给fn 的 this
     const res = fn.call(obj, ...args)
     // 如果res 是对象,则返回 res这个对象，否则，返回obj
     return typeof res === 'object' && res !== null ? res : obj
 }
-// console.log(_new(Foo));
+console.log(_new(Foo));
 
-
-function _new2(fn, ...args) {
-    const _obj = Object.create({})
-    _obj.__proto__ = fn.prototype
-    const res = fn.call(_obj, ...args)
-    return typeof res === 'object' ? res : _obj
-}
-function foo(...args) {
-    console.log(args);
-}
-console.log(_new2(foo, 1, 2, 3));

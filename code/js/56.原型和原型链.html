@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原型和原型链</title>
+</head>
+
+<body>
+    <script>
+        // 例子1
+        function Foo() {
+            // 这里只有执行Foo函数才会执行，会把Foo.a的函数重写
+            Foo.a = function () {
+                console.log(1);
+            }
+            this.a = function () {
+                console.log(2)
+            }
+        }
+
+        Foo.prototype.a = function () {
+            console.log(3);
+        }
+
+        Foo.a = function () {
+            console.log(4);
+        }
+
+        Foo.a();// 4
+        let obj = new Foo();
+        obj.a();// 2
+        Foo.a();// 3 // 这里做错了，应该是1
+
+        // 浏览器端结果：
+        // 例子2
+        var a = function () {
+            this.b = 3; // 实例上的b
+        }
+        var c = new a();// c.b = 3
+        a.prototype.b = 9;// 原型上的b，只有实例上没有的 时候才会取原型上的
+        var b = 7;// window.b = 7
+        a()// window.a() => window.b = 3
+        console.log(b);// window.b => 3
+        console.log(c.b) // 3
+
+    </script>
+</body>
+
+</html>
