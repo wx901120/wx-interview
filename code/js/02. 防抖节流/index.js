@@ -19,7 +19,8 @@ function throttle(cb, delay) {
             last = now
             cb(...args)
         } else if (!timerId) {
-            // 最后一次触发情况：进到这里的就是还有剩余时间，在剩余时间要执行最后一次func函数
+            // 进到这里的就是有剩余时间，没有定时器
+            // 最后一次触发情况：在剩余时间要执行最后一次func函数
             clearTimeout(timerId)
             timerId = null
             timerId = setTimeout(() => {

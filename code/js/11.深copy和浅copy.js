@@ -50,7 +50,7 @@ console.log(deep.b === originObj.b);// false
  * 2. 需要处理循环引用的问题
  */
 // 面试用这个
-function _deepClone(target, map = new Map()) {
+function _deepClone(target, map = new WeakMap()) {
     // 1. 基本数据类型直接返回
     if (typeof target !== 'object' || target === null) return target
     // 2. 函数，正则，日期，ES6新对象，执行构造器，返回新的对象
@@ -60,10 +60,11 @@ function _deepClone(target, map = new Map()) {
 
     // 3. 避免循环引用
     if (map.get(target)) return map.get(target)
-    map.set(target, true)
-
+    
     // 4.针对数组和对象区分
     const cloneTarget = Array.isArray(target) ? [] : {}
+    // 放这里
+    map.set(target, cloneTarget)
 
     //5.递归遍历
     Object.keys(target).forEach(key => {
@@ -86,62 +87,3 @@ function _shallowClone(target) {
     })
     return cloneTarget
 }
-
-
-// 第二次
-function _deepClone2(rawObj, map = new Map()) {
-    if (typeof rawObj !== 'object' || rawObj === null) return rawObj
-
-    const constructor = rawObj.constructor
-
-    // 函数，正则，日期
-    if (/^(Function|RegExp|Map|Set)/g.test(constructor.name)) return new constructor(rawObj)
-
-    if (map.has(rawObj)) return map.get(rawObj)
-    map.set(rawObj, true)
-
-    let cloneObj = Array.isArray(rawObj) ? [] : {}
-
-    Object.keys(rawObj).forEach(key => {
-        cloneObj[key] = _deepClone2(rawObj[key], map)
-    })
-}
-// 第三次
-const obj = {
-    a: 1,
-    b: {
-        c: 2
-    },
-    d: function () { },
-    e: [1, 2, 3],
-    i: new RegExp(),
-    h: new Date(),
-    f: new Set([1, 2]),
-    g: new Map([['key', 'value']])
-}
-
-function _deepClone(target, map = new Map()) {
-    if (typeof target !== 'object' || target === null) return target
-    const constructor = target.constructor
-    // if(target instanceof Function) return new Function(target)
-    // if(target instanceof Map) return new Map(target)
-    if (/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) return new constructor(target)
-
-    if (map.get(target)) return map.get(target)
-    map.set(target, true)
-
-    let cloneObj = Array.isArray(target) ? [] : {}
-    Object.keys(target).forEach(key => {
-        cloneObj[key] = _deepClone(target[key], map)
-    })
-    return cloneObj
-}
-let clone = _deepClone(obj)
-obj.a = 2
-obj.a.b = 3
-obj.e.push(3)
-console.log(clone);
-
-
-// js新出的深copy全局方法：structuredClone（）
-// structuredClone()

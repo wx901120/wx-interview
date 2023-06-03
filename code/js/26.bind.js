@@ -1,6 +1,6 @@
 /**
  * 返回一个新的函数，新函数的this 是bind()的第一个参数
- * 解决什么问题的：
+ * 解决什么问题的：某个对象想要用另外一个对象的方法时
  *
  */
 const obj = {
@@ -17,10 +17,6 @@ const fn = obj.getName.bind(obj2)
 
 Function.prototype._bind = function (target, ...args) {
     // 因为是箭头函数，所以不需要_self = this
-    // const fn = (...rest) => {
-    //     return this.call(target, ...args, ...rest)
-    // }
-    // return fn
     return (...rest) => {
         return this.call(target, ...args, ...rest)
     }

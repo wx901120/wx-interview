@@ -117,7 +117,7 @@ console.log(Sub.__proto__ === Super) // true
 // es6的class继承和es5的继承有什么区别？面试题
 // Class 作为构造函数的语法糖，同时有prototype属性和__proto__属性，因此同时存在两条继承链
 /**
- * (1) 子类的 __proto__ 属性指向父类
+ * (1) 子类的 __proto__ 属性指向父类：Sub.__proto__ === Super
  * (2) 子类prototype属性的__proto__属性，表示方法的继承，总是指向父类的prototype属性
  * 怎么理解？
  * 子类作为一个实例对象，它的原型是父类，即B.__proto__ = A
@@ -161,5 +161,3 @@ function Shape() {
 //   console.log('Is rect an instance of Rectangle?', rect instanceof Rectangle); // true
 //   console.log('Is rect an instance of Shape?', rect instanceof Shape); // true
 //   rect.move(1, 1); // Outputs, 'Shape moved.'
-
-  
